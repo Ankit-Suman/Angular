@@ -1,0 +1,138 @@
+
+<script>
+    function test(){
+	var tabsNewAnim = $('#navbarSupportedContent');
+	var selectorNewAnim = $('#navbarSupportedContent').find('li').length;
+	var activeItemNewAnim = tabsNewAnim.find('.active');
+	var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
+	var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+	var itemPosNewAnimTop = activeItemNewAnim.position();
+	var itemPosNewAnimLeft = activeItemNewAnim.position();
+	$(".hori-selector").css({
+		"top":itemPosNewAnimTop.top + "px", 
+		"left":itemPosNewAnimLeft.left + "px",
+		"height": activeWidthNewAnimHeight + "px",
+		"width": activeWidthNewAnimWidth + "px"
+	});
+	$("#navbarSupportedContent").on("click","li",function(e){
+		$('#navbarSupportedContent ul li').removeClass("active");
+		$(this).addClass('active');
+		var activeWidthNewAnimHeight = $(this).innerHeight();
+		var activeWidthNewAnimWidth = $(this).innerWidth();
+		var itemPosNewAnimTop = $(this).position();
+		var itemPosNewAnimLeft = $(this).position();
+		$(".hori-selector").css({
+			"top":itemPosNewAnimTop.top + "px", 
+			"left":itemPosNewAnimLeft.left + "px",
+			"height": activeWidthNewAnimHeight + "px",
+			"width": activeWidthNewAnimWidth + "px"
+		});
+	});
+}
+$(document).ready(function(){
+	setTimeout(function(){ test(); });
+});
+$(window).on('resize', function(){
+	setTimeout(function(){ test(); }, 500);
+});
+$(".navbar-toggler").click(function(){
+	$(".navbar-collapse").slideToggle(300);
+	setTimeout(function(){ test(); });
+});
+
+
+
+// --------------add active class-on another-page move----------
+jQuery(document).ready(function($){
+	// Get current path and find target link
+	var path = window.location.pathname.split("/").pop();
+
+	// Account for home page with empty path
+	if ( path == '' ) {
+		path = 'index.html';
+	}
+
+	var target = $('#navbarSupportedContent ul li a[href="'+path+'"]');
+	// Add active class to target link
+	target.parent().addClass('active');
+});
+
+</script>
+<nav class="navbar navbar-expand-custom navbar-mainbg">
+    <a class="navbar-brand navbar-logo" href="#"></a>
+    <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+           
+            <li class="nav-item">
+                <a class="button" href="javascript:void(0);" routerLink="/register"><i class="far fa-clone" ></i>Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="button" href="javascript:void(0);" routerLink="/home"><i class="far fa-calendar-alt" ></i>Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="button" href="javascript:void(0);" routerLink="/login"><i class="far fa-chart-bar" ></i>Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="button" href="javascript:void(0);" routerLink="/login"><i class="far fa-copy" ></i>Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<mat-toolbar color="primary">
+    <span>Employee Details</span>
+    <button mat-button (click)="toggleGridColumns()" fxHide.lt-md>
+      <span *ngIf="gridColumns === 4">Three Columns</span>
+      <span *ngIf="gridColumns === 3">Four Columns</span>
+    </button>
+  </mat-toolbar>
+  <div class="content">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let data of myItems;let i= index">
+        <mat-card class="mat-elevation-z4">
+          <mat-card-header> 
+            <mat-card-title><b>{{data.Value}}</b></mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="{{data.img}}">
+          <mat-card-content>
+            <p>
+              Contact:{{data.Contact}}
+            </p>
+            <p>
+                Email:{{data.email}}
+              </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">      
+        <div class="form-group">      
+          <!-- Form that gets user input -->      
+          <form name="itemForm">      
+            <input id="Value" name="Value" required [(ngModel)]="newItem.Value" minlength="3" maxlength="20" style="width: 50%;" placeholder="Enter Name"      
+              class="form-control">
+            <input id="Value" name="Contact" required [(ngModel)]="newItem.Contact" minlength="3" maxlength="10" style="width: 50%;" placeholder="Enter Contact"      
+              class="form-control">
+            <input id="Value" name="email" required [(ngModel)]="newItem.email"  style="width: 50%;" placeholder="Enter Email"      
+              class="form-control">
+            <input id="Value" name="img" required [(ngModel)]="newItem.img" style="width: 50%;" placeholder="Insert img url"      
+              class="form-control">         
+          </form>      
+          <br>      
+          <!-- Add button to add record -->      
+          <button type="submit" (click)="AddItem()" [disabled]="IsForUpdate == true" class="btn btn-default">Add</button>      
+          <!-- Update button to submit updated value -->      
+          <!-- <button type="submit" (click)="UpdateItem()" [disabled]="IsForUpdate == true" class="btn btn-default">Update</button>       -->
+        </div>      
+      </div>  
